@@ -64,7 +64,11 @@ public struct DodoCarouselView<Item, Content: View>: View {
   @State private var xContentOffset: CGFloat = 0
   @State private var itemFrames: [Int: CGRect] = [:]
   @State private var contentSize: CGSize?
-  @State private var parentWidth: CGFloat?
+  
+  //Hack: initial incorrect value of 1 is provided to force additional layout cycle in case size proposed by container is incorrect.
+  //For example, '.padding()' modifier applied to DodoCarouselView somehow proposes content size of DodoCarouselView instead of the real size of DodoCarouselView's container minus padding edges, which is pretty fucked up
+  #warning("Hack!")
+  @State private var parentWidth: CGFloat? = 1
   
   private var spacing: CGFloat {
     guard let firstItemFrame = itemFrames[0], let secondItemFrame = itemFrames[1] else { return 0 }
